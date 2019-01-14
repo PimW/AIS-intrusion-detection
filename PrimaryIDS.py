@@ -13,8 +13,8 @@ class PrimaryIDS(object):
         print("Initializing IDS..")
         self.affinity_threshold = 0.3
         self.alert_threshold = 1
-        self.secondaryIDS_count = 5
-        self.detector_set_size = 2
+        self.secondaryIDS_count = 1
+        self.detector_set_size = 50
 
         self.secondaryIDSs = []
 
@@ -38,7 +38,7 @@ class PrimaryIDS(object):
 
     def create_secondary_ids(self):
         for i in range(self.secondaryIDS_count):
-            print("Creating detector set [%d/%d].." % (i+1, self.secondaryIDS_count))
+            print("Creating detector set [%d/%d].." % (i + 1, self.secondaryIDS_count))
             secondary_ids = SecondaryIDS()
             secondary_ids.detectors = self.generate_detector_set()
             self.add_secondary_ids(secondary_ids)
@@ -50,7 +50,6 @@ class PrimaryIDS(object):
         return self.detector_generator.generate_detector_set(self.detector_set_size)
 
     def detect(self, antigen: Gene):
-        # TODO: possibly keep track of false positives/negatives for risk factors
         votes = 0
 
         for secondary_ids in self.secondaryIDSs:

@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from sklearn.decomposition import PCA
-from sklearn.preprocessing import MinMaxScaler, RobustScaler
+from sklearn.preprocessing import MinMaxScaler, RobustScaler, QuantileTransformer
 
 data_file = "data-small.csv"
 
@@ -23,20 +23,17 @@ data = pd.get_dummies(df_total)
 print("Making numpy matrix..")
 np_array = data.as_matrix()
 
-
 print("Min Max Normalization..")
-rscaler = RobustScaler()
+rscaler = QuantileTransformer()  # RobustScaler()
 scaler = MinMaxScaler()
 np_array = rscaler.fit_transform(np_array)
 np_array = scaler.fit_transform(np_array)
 
 print("Executing PCA..")
 print(np_array.shape)
-pca = PCA(n_components=5) # PCA(n_components=5)
+pca = PCA(n_components=5)  # PCA(n_components=5)
 pca_data = pca.fit_transform(np_array)
 print(pca.explained_variance_ratio_.cumsum())
-
-
 
 split_point = 494021
 df1 = data.iloc[:split_point, :]
@@ -49,7 +46,7 @@ normal_data = rscaler.transform(normal_data)
 normal_data = scaler.transform(normal_data)
 normal_data = pca.transform(normal_data)
 
-np.savetxt("data-self-kpca-robust.csv", normal_data, delimiter=",")
+np.savetxt("data-self-kpca-quantile.csv", normal_data, delimiter=",")
 
 ##################################################
 
@@ -67,10 +64,8 @@ np_array = rscaler.transform(np_array)
 np_array = scaler.transform(np_array)
 np_array = pca.transform(np_array)
 
-
-new_df = pd.DataFrame(data=np_array[0:, 0:])#, index=np_array[0:,0])
+new_df = pd.DataFrame(data=np_array[0:, 0:])  # , index=np_array[0:,0])
 new_df = pd.concat([new_df, labels], axis=1)
 
-new_df.to_csv("data-intrusion-kpca-robust.csv")
-#np.savetxt("data-intrusion-test.csv", np_array, delimiter=",")
-
+new_df.to_csv("data-intrusion-kpca-quantile.csv")
+# np.savetxt("data-intrusion-test.csv", np_array, delimiter=",")

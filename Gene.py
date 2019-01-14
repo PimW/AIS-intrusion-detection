@@ -4,18 +4,17 @@ from scipy.spatial.distance import euclidean
 
 class Gene(object):
     distance_measure = ''
-    lifespan = 100  # TODO: change
+    lifespan = 100
     size = 5
 
     def __init__(self, gene_array):
         self.activation = 0
         self.array = gene_array
 
-    def match_many(self):  # TODO: change name?
+    def match_many(self):
         raise NotImplementedError()
 
     def match(self, other) -> bool:
-        # TODO: increment activation
         raise NotImplementedError()
 
     def distance(self, other) -> float:

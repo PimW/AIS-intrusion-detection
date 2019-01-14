@@ -9,8 +9,8 @@ class Adversary(object):
 
     def spawn(self) -> [Gene, str]:
         count = 0
-        for antigen in self.antigens[:100000]:
-            if count % 1000 == 0:
+        for antigen in self.antigens:
+            if count % 10000 == 0:
                 print("[%d/%d] antigens" % (count, len(self.antigens)))
             count += 1
             yield antigen

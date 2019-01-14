@@ -11,21 +11,21 @@ class DataLoader(object):
     def load_genes(self) -> list:
         genes = []
         data = open(self.self_genes_file)
-        for gene_array in data.readlines():
+        for gene_array in data.readlines()[:10000]:
             gene_array = gene_array.strip().split(',')
             try:
                 gene = Gene(np.array(gene_array, dtype='float32'))
-            except:
+            except Exception as e:
                 print(gene_array)
-                raise
+                raise e
             genes.append(gene)
         return genes
 
     def load_test_genes(self):
         genes = []
-        data = open(self.test_genes_File)  # np.loadtxt(self.self_genes_file, delimiter=',')
+        data = open(self.test_genes_File)
         data.readline()
-        for gene_array in data.readlines():
+        for gene_array in data.readlines()[:100000]:
             idx, *gene, label = gene_array.strip().split(',')
             gene = Gene(np.array(gene, dtype='float32'))
             genes.append((gene, label))
